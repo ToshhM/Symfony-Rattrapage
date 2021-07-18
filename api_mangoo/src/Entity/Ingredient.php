@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,22 +13,26 @@ class Ingredient
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     *  @Groups("post=read")
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post=read")
      */
     private $name;
 
     /**
+     * @Groups("post=read")
      * @ORM\Column(type="integer")
      */
     private $prix;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post=read")
      */
     private $categorie;
 
