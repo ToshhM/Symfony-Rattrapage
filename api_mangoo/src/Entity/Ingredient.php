@@ -13,7 +13,7 @@ class Ingredient
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     *  @Groups("post=read")
+     * @Groups("post=read")
      * @ORM\Column(type="integer")
      */
     private $id;
