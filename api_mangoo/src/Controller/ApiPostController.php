@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiPostController extends AbstractController
 {
@@ -48,31 +49,36 @@ class ApiPostController extends AbstractController
     
     }
     
-    
-     /**
-    * @Route("/api/Ingredient", name="api_Ingredient_store", methods={"POST"})
-    */
 
-    public function store(Request $request, SerializerInterface $serializer, EntityManagerInterface $em ){
-
-        // Ceci fonction très bien 
-        /*
-         $jsonReceive = $request-> getContent();
-        dd($jsonReceive);
+        /**
+        * @Route("/api/Ingredient", name="api_Ingredient_store", methods={"POST"})
         */
-        $jsonRecu = $request-> getContent();
-       
-        try {
-            $Ingredient = $serializer->deserialize($jsonRecu, Ingredient::class, 'json');
-            $em -> persist($Ingredient);
-            $em-> flush();
-            return $this->json($Ingredient,201,['groups' => 'post:read']);
-        } catch (NotEncodableValueException $e){
 
-        return $this->json([
-            'status' => 400,
-            'message' => $e->getMessage() 
-        ], 400);
-    }
+    public function store(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator ){
+
+          // Ceci fonction très bien 
+        
+         $jsonReceive = $request-> getContent();
+        try {
+
+        
+        $Ingredient = $serializer->deserialize($jsonReceive, Ingredient::class,'json');
+
+        $errors = $validator->validate($Ingredient);
+
+        if(count($errors) > 0 ){
+            return $this->json($errors, 400);
+        }
+
+        $em->persist($Ingredient);
+        $em->flush();
+        
+        return $this->json($Ingredient, 201,['groups' => 'post:read']);
+        }catch(NotEncodableValueException $e){
+            return $this ->json([
+                'status' => 400,
+                'message' => $e ->getMessage()
+            ], 400);
+        }
     }
 }
