@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiPostController extends AbstractController
